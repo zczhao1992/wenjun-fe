@@ -4,36 +4,36 @@ import styles from './List.module.scss';
 
 const rawQuestionList = [
   {
-    id: 'q1',
+    _id: 'q1',
     title: '问卷1',
     isPublished: false,
     isStar: false,
     answerCount: 5,
-    createAt: '3月10日 12:23',
+    createdAt: '3月10日 12:23',
   },
   {
-    id: 'q2',
+    _id: 'q2',
     title: '问卷2',
     isPublished: true,
     isStar: false,
     answerCount: 5,
-    createAt: '3月10日 12:23',
+    createdAt: '3月10日 12:23',
   },
   {
-    id: 'q3',
+    _id: 'q3',
     title: '问卷3',
     isPublished: false,
     isStar: false,
     answerCount: 5,
-    createAt: '3月10日 12:23',
+    createdAt: '3月10日 12:23',
   },
   {
-    id: 'q4',
+    _id: 'q4',
     title: '问卷4',
     isPublished: true,
     isStar: false,
     answerCount: 5,
-    createAt: '3月10日 12:23',
+    createdAt: '3月10日 12:23',
   },
 ];
 
@@ -42,7 +42,19 @@ const List: FC = () => {
 
   return (
     <>
-      <p>List</p>
+      <div className={styles.header}>
+        <div className={styles.left}>
+          <h3>我的问卷</h3>
+        </div>
+        <div className={styles.righ}>搜索</div>
+      </div>
+      <div className={styles.content}>
+        {questionList.map((q) => {
+          const { _id } = q;
+          return <QuestionCard key={_id} {...q} />;
+        })}
+      </div>
+      <div className={styles.footer}>分页</div>
     </>
   );
 };
