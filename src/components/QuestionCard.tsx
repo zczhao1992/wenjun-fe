@@ -10,7 +10,7 @@ import {
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import { useRequest } from "ahooks";
-// import { updateQuestionService, duplicateQuestionService } from '../services/question'
+import { updateQuestionService, duplicateQuestionService } from '../services/question'
 import styles from "./QuestionCard.module.scss";
 
 const { confirm } = Modal;
@@ -30,53 +30,53 @@ const QuestionCard: FC<PropsType> = (props: PropsType) => {
 
   // 修改 标星
   const [isStarState, setIsStarState] = useState(isStar);
-  // const { loading: changeStarLoading, run: changeStar } = useRequest(
-  //   async () => {
-  //     await updateQuestionService(_id, { isStar: !isStarState })
-  //   },
-  //   {
-  //     manual: true,
-  //     onSuccess() {
-  //       setIsStarState(!isStarState) // 更新 state
-  //       message.success('已更新')
-  //     },
-  //   }
-  // )
+  const { loading: changeStarLoading, run: changeStar } = useRequest(
+    async () => {
+      await updateQuestionService(_id, { isStar: !isStarState })
+    },
+    {
+      manual: true,
+      onSuccess() {
+        setIsStarState(!isStarState) // 更新 state
+        message.success('已更新')
+      },
+    }
+  )
 
   // 复制
-  // const { loading: duplicateLoading, run: duplicate } = useRequest(
-  //   // async () => {
-  //   //   const data = await duplicateQuestionService(_id)
-  //   //   return data
-  //   // },
-  //   async () => await duplicateQuestionService(_id),
-  //   {
-  //     manual: true,
-  //     onSuccess(result) {
-  //       message.success('复制成功')
-  //       nav(`/question/edit/${result.id}`) // 跳转到问卷编辑页
-  //     },
-  //   }
-  // )
+  const { loading: duplicateLoading, run: duplicate } = useRequest(
+    // async () => {
+    //   const data = await duplicateQuestionService(_id)
+    //   return data
+    // },
+    async () => await duplicateQuestionService(_id),
+    {
+      manual: true,
+      onSuccess(result) {
+        message.success('复制成功')
+        nav(`/question/edit/${result.id}`) // 跳转到问卷编辑页
+      },
+    }
+  )
 
   // 删除
   const [isDeletedState, setIsDeletedState] = useState(false);
-  // const { loading: deleteLoading, run: deleteQuestion } = useRequest(
-  //   async () => await updateQuestionService(_id, { isDeleted: true }),
-  //   {
-  //     manual: true,
-  //     onSuccess() {
-  //       message.success('删除成功')
-  //       setIsDeletedState(true)
-  //     },
-  //   }
-  // )
+  const { loading: deleteLoading, run: deleteQuestion } = useRequest(
+    async () => await updateQuestionService(_id, { isDeleted: true }),
+    {
+      manual: true,
+      onSuccess() {
+        message.success('删除成功')
+        setIsDeletedState(true)
+      },
+    }
+  )
 
   function del() {
     confirm({
       title: "确定删除该问卷？",
       icon: <ExclamationCircleOutlined />,
-      // onOk: deleteQuestion,
+      onOk: deleteQuestion,
     });
   }
 
@@ -137,8 +137,8 @@ const QuestionCard: FC<PropsType> = (props: PropsType) => {
               type="text"
               icon={<StarOutlined />}
               size="small"
-            // onClick={changeStar}
-            // disabled={changeStarLoading}
+              onClick={changeStar}
+              disabled={changeStarLoading}
             >
               {isStarState ? "取消标星" : "标星"}
             </Button>
@@ -146,13 +146,13 @@ const QuestionCard: FC<PropsType> = (props: PropsType) => {
               title="确定复制该问卷？"
               okText="确定"
               cancelText="取消"
-            // onConfirm={duplicate}
+              onConfirm={duplicate}
             >
               <Button
                 type="text"
                 icon={<CopyOutlined />}
                 size="small"
-              // disabled={duplicateLoading}
+                disabled={duplicateLoading}
               >
                 复制
               </Button>
@@ -162,7 +162,7 @@ const QuestionCard: FC<PropsType> = (props: PropsType) => {
               icon={<DeleteOutlined />}
               size="small"
               onClick={del}
-            // disabled={deleteLoading}
+              disabled={deleteLoading}
             >
               删除
             </Button>
