@@ -3,16 +3,15 @@ import { Outlet } from 'react-router-dom'
 import { Layout, Spin } from 'antd'
 import Logo from '../components/Logo'
 import UserInfo from '../components/UserInfo'
-// import useLoadUserData from '../hooks/useLoadUserData'
-// import useNavPage from '../hooks/useNavPage'
+import useLoadUserData from '../hooks/useLoadUserData'
+import useNavPage from '../hooks/useNavPage'
 import styles from './MainLayout.module.scss'
 
 const { Header, Content, Footer } = Layout
 
 const MainLayout: FC = () => {
-  // const { waitingUserData } = useLoadUserData()
-  // useNavPage(waitingUserData)
-
+  const { waitingUserData } = useLoadUserData()
+  useNavPage(waitingUserData)
 
   return (
     <Layout>
@@ -26,13 +25,13 @@ const MainLayout: FC = () => {
       </Header>
       <Layout className={styles.main}>
         <Content>
-          {/* {waitingUserData ? (
+          {waitingUserData ? (
             <div style={{ textAlign: 'center', marginTop: '60px' }}>
               <Spin />
             </div>
-          ) : ( */}
-          <Outlet />
-          {/* )} */}
+          ) : (
+            <Outlet />
+          )}
         </Content>
       </Layout>
       <Footer className={styles.footer}>小慕问卷 &copy;2023 - present. Created by zhaochuan</Footer>
