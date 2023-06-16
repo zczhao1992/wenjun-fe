@@ -10,7 +10,10 @@ import {
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import { useRequest } from "ahooks";
-import { updateQuestionService, duplicateQuestionService } from '../services/question'
+import {
+  updateQuestionService,
+  duplicateQuestionService,
+} from "../services/question";
 import styles from "./QuestionCard.module.scss";
 
 const { confirm } = Modal;
@@ -32,16 +35,16 @@ const QuestionCard: FC<PropsType> = (props: PropsType) => {
   const [isStarState, setIsStarState] = useState(isStar);
   const { loading: changeStarLoading, run: changeStar } = useRequest(
     async () => {
-      await updateQuestionService(_id, { isStar: !isStarState })
+      await updateQuestionService(_id, { isStar: !isStarState });
     },
     {
       manual: true,
       onSuccess() {
-        setIsStarState(!isStarState) // 更新 state
-        message.success('已更新')
+        setIsStarState(!isStarState); // 更新 state
+        message.success("已更新");
       },
     }
-  )
+  );
 
   // 复制
   const { loading: duplicateLoading, run: duplicate } = useRequest(
@@ -53,11 +56,11 @@ const QuestionCard: FC<PropsType> = (props: PropsType) => {
     {
       manual: true,
       onSuccess(result) {
-        message.success('复制成功')
-        nav(`/question/edit/${result.id}`) // 跳转到问卷编辑页
+        message.success("复制成功");
+        nav(`/question/edit/${result.id}`); // 跳转到问卷编辑页
       },
     }
-  )
+  );
 
   // 删除
   const [isDeletedState, setIsDeletedState] = useState(false);
@@ -66,11 +69,11 @@ const QuestionCard: FC<PropsType> = (props: PropsType) => {
     {
       manual: true,
       onSuccess() {
-        message.success('删除成功')
-        setIsDeletedState(true)
+        message.success("删除成功");
+        setIsDeletedState(true);
       },
     }
-  )
+  );
 
   function del() {
     confirm({
