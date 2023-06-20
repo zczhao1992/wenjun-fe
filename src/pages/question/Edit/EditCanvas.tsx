@@ -8,6 +8,7 @@ import {
   ComponentInfoType,
   changeSelectedId,
 } from "../../../store/componentsReducer";
+import useBindCanvasKeyPress from "../../../hooks/useBindCanvasKeyPress";
 import styles from "./EditCanvas.module.scss";
 
 // 临时静态展示一下 Title Input 的效果
@@ -38,6 +39,9 @@ const EditCanvas: FC<PropsType> = ({ loading }) => {
     dispatch(changeSelectedId(id));
   }
 
+  // 绑定快捷键
+  useBindCanvasKeyPress();
+
   if (loading) {
     return (
       <div style={{ textAlign: "center", marginTop: "24px" }}>
@@ -48,29 +52,31 @@ const EditCanvas: FC<PropsType> = ({ loading }) => {
 
   return (
     <div className={styles.canvas}>
-      {componentList.map((c) => {
-        const { fe_id } = c;
+      {componentList
+        .filter((c) => !c.isHidden)
+        .map((c) => {
+          const { fe_id, isLocked } = c;
 
-        // 拼接class name
-        const wrapperDefaultClassName = styles["component-wrapper"];
-        const selectedClassName = styles.selected;
-        const lockedClassName = styles.locked;
-        const wrapperClassName = classNames({
-          [wrapperDefaultClassName]: true,
-          [selectedClassName]: fe_id === selectedId,
-          // [lockedClassName]: isLocked,
-        });
+          // 拼接class name
+          const wrapperDefaultClassName = styles["component-wrapper"];
+          const selectedClassName = styles.selected;
+          const lockedClassName = styles.locked;
+          const wrapperClassName = classNames({
+            [wrapperDefaultClassName]: true,
+            [selectedClassName]: fe_id === selectedId,
+            [lockedClassName]: isLocked,
+          });
 
-        return (
-          <div
-            key={fe_id}
-            className={wrapperClassName}
-            onClick={(e) => handleClick(e, fe_id)}
-          >
-            <div className={styles.component}>{genComponent(c)}</div>
-          </div>
-        );
-      })}
+          return (
+            <div
+              key={fe_id}
+              className={wrapperClassName}
+              onClick={(e) => handleClick(e, fe_id)}
+            >
+              <div className={styles.component}>{genComponent(c)}</div>
+            </div>
+          );
+        })}
 
       {/* <div className={styles['component-wrapper']}>
         <div className={styles.component}>
