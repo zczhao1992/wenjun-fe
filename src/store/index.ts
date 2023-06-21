@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import userReducer, { UserStateType } from "./userReducer";
 import componentsReducer, { ComponentsStateType } from "./componentsReducer";
+import pageInfoReducer, { PageInfoType } from "./pageInfoReducer";
 
 export type StateType = {
-  user: UserStateType
-  components: ComponentsStateType
-}
+  user: UserStateType;
+  components: ComponentsStateType;
+  pageInfo: PageInfoType;
+};
 
 export default configureStore({
   reducer: {
@@ -17,5 +19,6 @@ export default configureStore({
     // 组件列表（复杂、undo/redo）
 
     // 问卷信息
-  }
+    pageInfo: pageInfoReducer,
+  },
 });

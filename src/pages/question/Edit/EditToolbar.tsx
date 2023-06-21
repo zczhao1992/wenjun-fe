@@ -18,7 +18,7 @@ import {
   toggleComponentLocked,
   copySelectedComponent,
   pasteCopiedComponent,
-  // moveComponent,
+  moveComponent,
 } from "../../../store/componentsReducer";
 import useGetComponentInfo from "../../../hooks/useGetComponentInfo";
 
@@ -28,6 +28,11 @@ const EditToolbar: FC = () => {
   const { selectedId, componentList, selectedComponent, copiedComponent } =
     useGetComponentInfo();
   const { isLocked } = selectedComponent || {};
+
+  const length = componentList.length;
+  const selectedIndex = componentList.findIndex((c) => c.fe_id === selectedId);
+  const isFirst = selectedIndex <= 0; // 第一个
+  const isLast = selectedIndex + 1 >= length; // 最后一个
 
   // 删除组件
   function handleDelete() {
@@ -52,6 +57,22 @@ const EditToolbar: FC = () => {
   // 粘贴
   function paste() {
     dispatch(pasteCopiedComponent());
+  }
+
+  // 上移
+  function moveUp() {
+    if (isFirst) return;
+    dispatch(
+      moveComponent({ oldIndex: selectedIndex, newIndex: selectedIndex - 1 })
+    );
+  }
+
+  // 下移
+  function moveDown() {
+    if (isLast) return;
+    dispatch(
+      moveComponent({ oldIndex: selectedIndex, newIndex: selectedIndex + 1 })
+    );
   }
 
   return (
@@ -93,16 +114,16 @@ const EditToolbar: FC = () => {
         <Button
           shape="circle"
           icon={<UpOutlined />}
-          // onClick={moveUp}
-          // disabled={isFirst}
+          onClick={moveUp}
+          disabled={isFirst}
         ></Button>
       </Tooltip>
       <Tooltip title="下移">
         <Button
           shape="circle"
           icon={<DownOutlined />}
-          // onClick={moveDown}
-          // disabled={isLast}
+          onClick={moveDown}
+          disabled={isLast}
         ></Button>
       </Tooltip>
       <Tooltip title="撤销">

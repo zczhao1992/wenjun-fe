@@ -5,9 +5,9 @@ import { Button, Typography, Space, Input, message } from "antd";
 import { LeftOutlined, EditOutlined, LoadingOutlined } from "@ant-design/icons";
 import { useRequest, useKeyPress, useDebounceEffect } from "ahooks";
 import EditToolbar from "./EditToolbar";
-// import useGetPageInfo from '../../../hooks/useGetPageInfo'
+import useGetPageInfo from "../../../hooks/useGetPageInfo";
 import useGetComponentInfo from "../../../hooks/useGetComponentInfo";
-// import { changePageTitle } from '../../../store/pageInfoReducer'
+import { changePageTitle } from "../../../store/pageInfoReducer";
 import { updateQuestionService } from "../../../services/question";
 import styles from "./EditHeader.module.scss";
 
@@ -15,7 +15,7 @@ const { Title } = Typography;
 
 // 显示和修改标题
 const TitleElem: FC = () => {
-  // const { title } = useGetPageInfo()
+  const { title } = useGetPageInfo();
   const dispatch = useDispatch();
 
   const [editState, SetEditState] = useState(false);
@@ -23,13 +23,13 @@ const TitleElem: FC = () => {
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
     const newTitle = event.target.value.trim();
     if (!newTitle) return;
-    // dispatch(changePageTitle(newTitle))
+    dispatch(changePageTitle(newTitle));
   }
 
   if (editState) {
     return (
       <Input
-        // value={title}
+        value={title}
         onChange={handleChange}
         onPressEnter={() => SetEditState(false)}
         onBlur={() => SetEditState(false)}
@@ -39,7 +39,7 @@ const TitleElem: FC = () => {
 
   return (
     <Space>
-      {/* <Title>{title}</Title> */}
+      <Title>{title}</Title>
       <Button
         icon={<EditOutlined />}
         type="text"
@@ -53,12 +53,12 @@ const TitleElem: FC = () => {
 const SaveButton: FC = () => {
   const { id } = useParams();
   const { componentList = [] } = useGetComponentInfo();
-  // const pageInfo = useGetPageInfo();
+  const pageInfo = useGetPageInfo();
 
   const { loading, run: save } = useRequest(
     async () => {
       if (!id) return;
-      // await updateQuestionService(id, { ...pageInfo, componentList });
+      await updateQuestionService(id, { ...pageInfo, componentList });
     },
     { manual: true }
   );
@@ -96,13 +96,13 @@ const PublishButton: FC = () => {
   const nav = useNavigate();
   const { id } = useParams();
   const { componentList = [] } = useGetComponentInfo();
-  // const pageInfo = useGetPageInfo();
+  const pageInfo = useGetPageInfo();
 
   const { loading, run: pub } = useRequest(
     async () => {
       if (!id) return;
       await updateQuestionService(id, {
-        // ...pageInfo,
+        ...pageInfo,
         componentList,
         isPublished: true, // 标志着问卷已经被发布
       });
