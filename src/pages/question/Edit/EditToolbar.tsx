@@ -12,6 +12,7 @@ import {
   RedoOutlined,
 } from "@ant-design/icons";
 import { useDispatch } from "react-redux";
+import { ActionCreators as UndoActionCreators } from "redux-undo";
 import {
   removeSelectedComponent,
   changeComponentHidden,
@@ -75,6 +76,16 @@ const EditToolbar: FC = () => {
     );
   }
 
+  // 撤销
+  function undo() {
+    dispatch(UndoActionCreators.undo());
+  }
+
+  // 重做
+  function redo() {
+    dispatch(UndoActionCreators.redo());
+  }
+
   return (
     <Space>
       <Tooltip title="删除">
@@ -127,18 +138,10 @@ const EditToolbar: FC = () => {
         ></Button>
       </Tooltip>
       <Tooltip title="撤销">
-        <Button
-          shape="circle"
-          icon={<UndoOutlined />}
-          //  onClick={undo}
-        ></Button>
+        <Button shape="circle" icon={<UndoOutlined />} onClick={undo}></Button>
       </Tooltip>
       <Tooltip title="重做">
-        <Button
-          shape="circle"
-          icon={<RedoOutlined />}
-          // onClick={redo}
-        ></Button>
+        <Button shape="circle" icon={<RedoOutlined />} onClick={redo}></Button>
       </Tooltip>
     </Space>
   );
